@@ -34,4 +34,15 @@
       <%= yield %>
     </main>
   </body>
+  <script>
+      function highlightCode() {
+          Prism.highlightAll();
+      }
+
+      // Run on initial page load
+      document.addEventListener('DOMContentLoaded', highlightCode);
+
+      // Run on Turbo page loads
+      document.addEventListener('turbo:load', highlightCode);
+  </script>
 </html>
