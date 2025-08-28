@@ -1,0 +1,26 @@
+<%= form_with(model: article, class: "max-w-3xl mx-auto px-4 space-y-6", data: { controller: "editor" }) do |form| %>
+
+  <!-- Title -->
+  <%= form.text_field :title,
+                      placeholder: "Title",
+                      class: "w-full border-none text-5xl sm:text-6xl font-display font-bold text-gray-900 placeholder-gray-400 focus:ring-0 focus:outline-none",
+                      autofocus: true,
+                      id: "article_title" %>
+
+  <!-- Hidden field -->
+  <%= form.hidden_field :content, id: "article_content_hidden" %>
+
+  <!-- EditorJS container -->
+  <div id="article_content"
+       data-editor-target="article_content"
+       class="prose lg:prose-xl max-w-none min-h-[400px] focus:outline-none">
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex items-center gap-4 pt-6">
+    <%= form.submit "Publish",
+                    class: "px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-medium cursor-pointer" %>
+
+  </div>
+
+<% end %>

@@ -1,0 +1,30 @@
+<% content_for :title, "Showing article" %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl">Showing article</h1>
+
+  <%= render @article %>
+
+  <%= link_to "Edit this article", edit_article_path(@article), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to articles", articles_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= button_to "Destroy this article", @article, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+</div>
+
+<!--<div class="w-2/3 mx-auto px-4 py-12">-->
+<!--  <h1 class="text-4xl sm:text-5xl font-display font-bold text-gray-900 mb-6 text-center">-->
+    <%#= @article.title %>
+<!--  </h1>-->
+
+<!--  <div class="prose lg:prose-xl mx-auto">-->
+    <%#= display_content(@article.content) %>
+<!--  </div>-->
+<!--  <div class="mt-10 flex justify-center gap-4">-->
+    <%#= link_to "Back to Articles", articles_path, class: "px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100" %>
+
+    <%#= link_to "Edit", edit_article_path(@article), class: "px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-medium" %>
+<!--  </div>-->
+<!--</div>-->

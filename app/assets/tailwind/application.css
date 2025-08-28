@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
+
+/* Declare font tokens */
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    --font-serif: "Source Serif Pro", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;         /* body (Medium-like) */
+    --font-display: "Playfair Display", "Source Serif Pro", ui-serif, Georgia, serif;                       /* big titles */
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; /* code */
+}
+
+/* Medium-like prose tweaks */
+.prose {
+    @apply font-serif;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 .prose h5 .prose h6{
+    @apply font-display tracking-tight text-gray-900;
+}
+.prose p, .prose li {
+    @apply leading-relaxed text-gray-800;
+}
+
+/* Code styling */
+.prose :not(pre)>code {
+    @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono;
+}
+.prose pre {
+    @apply bg-gray-900 text-gray-100 rounded-xl p-4 overflow-x-auto shadow-md;
+}
+.prose pre code {
+    @apply font-mono text-sm bg-transparent p-0;
+}
+
+/* Lists */
+.prose ul { @apply list-disc list-inside; }
+.prose ol { @apply list-decimal list-inside; }
