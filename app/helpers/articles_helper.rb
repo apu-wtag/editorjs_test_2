@@ -13,9 +13,11 @@ module ArticlesHelper
         render_list(block["data"]["items"], block["data"]["style"])
 
       when "code"
+        # escaped_code = CGI.escapeHTML(block["data"]["code"])
+        # "<pre><code>#{escaped_code}</code></pre>"
         escaped_code = CGI.escapeHTML(block["data"]["code"])
-        "<pre><code>#{escaped_code}</code></pre>"
-
+        language = block["data"]["languageCode"] || "plaintext" # Fallback to plaintext if no languageCode
+        "<pre><code class=\"language-#{language}\">#{escaped_code}</code></pre>"
       else
         ""
       end

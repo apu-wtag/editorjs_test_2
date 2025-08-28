@@ -2,7 +2,8 @@ import { Controller } from "@hotwired/stimulus";
 import EditorJS from "@editorjs/editorjs";
 
 // These are the plugins
-import CodeTool from "@editorjs/code";
+// import CodeTool from "@editorjs/code";
+// import CustomCodeTool from "./cutstom_code_tool";
 import Header from "@editorjs/header";
 // import ImageTool from "@editorjs/image";
 import List from "@editorjs/list";
@@ -40,7 +41,12 @@ export default class extends Controller {
             inlineToolbar: true,
           },
         },
-        code: CodeTool,
+        code: {
+          class : window.CodeTool,
+          config: {
+            placeholder: "Enter your code here...",
+          },
+        }
       },
     });
 

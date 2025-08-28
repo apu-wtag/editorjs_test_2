@@ -33,6 +33,10 @@
 .prose pre code {
     @apply font-mono text-sm bg-transparent p-0;
 }
+article.prose pre code {
+    color: inherit; /* Prevent prose-code:text-pink-600 from overriding Prism.js colors */
+    background: none; /* Remove any prose background if needed */
+}
 
 /* Lists */
 .prose ul { @apply list-disc list-inside; }
