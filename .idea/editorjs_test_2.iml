@@ -150,6 +150,8 @@
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, ruby-3.4.4-p34) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="xpath (v3.2.0, ruby-3.4.4-p34) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.7.3, ruby-3.4.4-p34) [gem]" level="application" />
+    <orderEntry type="library" name="prismjs" level="application" />
+    <orderEntry type="library" name="bundle" level="application" />
   </component>
   <component name="RModuleSettingsStorage">
     <LOAD_PATH number="0" />

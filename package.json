@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/quote": "^2.7.6",
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {

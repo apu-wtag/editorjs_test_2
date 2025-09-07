@@ -57,6 +57,47 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def upload_image
+    file = params[:file]
+    if file
+      blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: file.original_filename)
+      render json: {success: 1, file: {url: url_for(blob)}}
+    else
+      render json: {success: 0, message: "No file provided"}, status: :unprocessable_entity
+    end
+  end
+  def fetch_image_url
+    url = params[:url]
+    if url
+      io = URI.open(url)
+      filename = File.basename(URI.parse(url).path)
+      blob = ActiveStorage::Blob.create_and_upload!(io: io, filename: filename)
+      render json: { success: 1, file: { url: url_for(blob) } }
+    else
+      render json: { success: 0, message: 'No URL provided' }, status: :unprocessable_entity
+    end
+  rescue => e
+    render json: { success: 0, message: e.message }, status: :unprocessable_entity
+  end
+  def upload_file
+    file = params[:file]
+    if file
+      blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: file.original_filename)
+      render json: {
+        success: 1,
+        file: {
+          url: url_for(blob),
+          size: blob.byte_size,
+          name: blob.filename.to_s,
+          title: blob.filename.to_s,
+          extension: blob.filename.extension
+        }
+      }
+    else
+      render json: { success: 0, message: 'No file provided' }, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
