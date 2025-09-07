@@ -72,7 +72,8 @@ export default class extends Controller {
                     return {
                       success: 1,
                       file: {
-                        url: data.file.url
+                        url: data.file.url,
+                        signed_id: data.file.signed_id
                       }
                     };
                   } else {
@@ -93,7 +94,8 @@ export default class extends Controller {
                     return {
                       success: 1,
                       file: {
-                        url: data.file.url
+                        url: data.file.url,
+                        signed_id: data.file.signed_id
                       }
                     };
                   } else {
@@ -121,7 +123,8 @@ export default class extends Controller {
                   if (data.success === 1) {
                     return {
                       success: 1,
-                      file: data.file
+                      file: data.file,
+                      signed_id: data.file.signed_id
                     };
                   } else {
                     throw new Error('File upload failed');

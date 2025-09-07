@@ -1,3 +1,4 @@
+require "sidekiq/web"
 Rails.application.routes.draw do
   resources :articles do
     collection do
@@ -18,4 +19,5 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  mount Sidekiq::Web => "/sidekiq"
 end

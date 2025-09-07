@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_113136) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_07_092452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_113136) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "article_blob_links", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.bigint "active_storage_blob_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active_storage_blob_id"], name: "index_article_blob_links_on_active_storage_blob_id"
+    t.index ["article_id", "active_storage_blob_id"], name: "idx_on_article_id_active_storage_blob_id_be9e9afd1f", unique: true
+    t.index ["article_id"], name: "index_article_blob_links_on_article_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.jsonb "content"
@@ -64,4 +74,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_113136) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "article_blob_links", "active_storage_blobs"
+  add_foreign_key "article_blob_links", "articles"
 end
