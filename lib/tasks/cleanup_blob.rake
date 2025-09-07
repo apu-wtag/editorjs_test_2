@@ -1,26 +1,38 @@
-# lib/tasks/cleanup.rake
 namespace :cleanup_blob do
-  desc "Purge any unattached Active Storage blobs older than 24 hours"
+  desc "Purge old blobs that are not formally attached OR referenced by any article link."
   task purge_unattached_blobs: :environment do
 
-    puts "Searching for unattached blobs older than 24 hours..."
+    puts "Building allow lists from database..."
 
-    # This is the magic: ActiveStorage::Blob.unattached finds all blobs
-    # that are not linked to any record via an Attachment. This perfectly
-    # describes our abandoned-draft uploads.
-    # The 24-hour buffer prevents deleting files from a draft that is
-    # actively being edited but hasn't been saved yet.
-    blobs_to_purge = ActiveStorage::Blob.unattached.where("created_at <= ?", 24.hours.ago)
+    # 1. Get ALL blob IDs formally attached to ANY model (e.g., User avatars)
+    attached_ids = ActiveStorage::Attachment.distinct.pluck(:blob_id)
 
-    count = blobs_to_purge.count
+    # 2. Get ALL blob IDs referenced in our new Article link table
+    referenced_ids = ArticleBlobLink.distinct.pluck(:active_storage_blob_id)
+
+    # 3. Combine them into one master "allow list"
+    allow_list_ids = Set.new(attached_ids + referenced_ids)
+
+    puts "Found #{allow_list_ids.count} unique blobs to keep."
+    puts "Searching for old blobs to purge (older than 24 hours)..."
+
+    # 4. Find all blobs older than 24 hours that are NOT IN our allow list.
+    #    This is ONE efficient SQL query.
+    blobs_to_purge = ActiveStorage::Blob
+                       .where("created_at <= ?", 24.hours.ago)
+                       .where.not(id: allow_list_ids.to_a)
+
+    count = 0
+    blobs_to_purge.find_each do |blob|
+      blob.purge
+      count += 1
+      puts "Purged orphan blob: #{blob.filename} (ID: #{blob.id})"
+    end
 
     if count > 0
-      puts "Found #{count} unattached blob(s). Purging..."
-      # Purge them all
-      blobs_to_purge.find_each(&:purge)
-      puts "Purge complete."
+      puts "Purge complete. Deleted #{count} orphan blob(s)."
     else
-      puts "No unattached blobs found. All clean! "
+      puts "No orphan blobs found. All clean! ✨"
     end
   end
 end
