@@ -65,3 +65,7 @@ group :test do
 end
 
 gem "friendly_id", "~> 5.5"
+
+gem "sidekiq", "~> 8.0"
+
+gem "whenever", "~> 1.0"
