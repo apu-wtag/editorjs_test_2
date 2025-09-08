@@ -149,7 +149,13 @@ export default class extends Controller {
           }
         },
         quote: {
-          class: Quote
+          class: Quote,
+          inlineToolbar: true,
+          shortcut: 'CMD+SHIFT+O',
+          config: {
+            quotePlaceholder: 'Enter a quote... Press SHIFT+ENTER for newline',
+            captionPlaceholder: 'Quote\'s author',
+          },
         },
         delimiter: {
           class: Delimiter
@@ -173,13 +179,25 @@ export default class extends Controller {
     });
 
     this.element.addEventListener("submit", this.saveEditorData.bind(this));
-    // handle "Enter" in title → jump to editor
     const titleInput = document.getElementById("article_title");
-    if (titleInput) {
+    const topicInput = document.getElementById("article_topic_name");
+
+    // Handle "Enter" from Title -> move to Topic
+    if (titleInput && topicInput) {
       titleInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          this.contentEditor.focus(); // focus editor
+          topicInput.focus(); // Focus the topic input
+        }
+      });
+    }
+
+    // Handle "Enter" from Topic -> move to Editor Content
+    if (topicInput && this.contentEditor) {
+      topicInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          this.contentEditor.focus(); // Focus the Editor.js instance
         }
       });
     }

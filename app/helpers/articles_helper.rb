@@ -38,15 +38,14 @@ module ArticlesHelper
 
       when "quote"
         data = block['data']
-        if data["caption"] != "<br>"
-          "<blockquote class=\"my-8 border-l-4 border-gray-300 pl-4 italic text-gray-700\">#{data['text']}<cite class=\"block text-right mt-2 text-gray-500\">— #{CGI.escapeHTML(data['caption'] || '')}</cite></blockquote>"
+        if data["caption"] != ""
+          "<blockquote class=\"my-8 border-l-4 border-gray-300 pl-4 italic text-gray-700\">#{data['text']}<cite class=\"block text-right mt-2 text-gray-500\">— #{CGI.escapeHTML(data['caption'])}</cite></blockquote>"
         else
-          "<blockquote class=\"my-8 border-l-4 border-gray-300 pl-4 italic text-gray-700\">#{data['text']}<cite class=\"block text-right mt-2 text-gray-500\"></cite></blockquote>"
+          "<blockquote class=\"my-8 border-l-4 border-gray-300 pl-4 italic text-gray-700\">#{data['text']}</blockquote>"
         end
 
       when "delimiter"
-        "<hr class=\"my-8 border-t border-gray-300\">"
-
+        "<div class=\"my-8 text-center text-3xl tracking-wider text-black-300\">***</div>"
       when "table"
         data = block['data']
         content = data['content']
@@ -65,6 +64,38 @@ module ArticlesHelper
       end
     end
     content_html.join.html_safe
+  end
+  def extract_summary_from_editorjs(content_json, length: 150)
+    return "" if content_json.blank?
+
+    summary_text = "" # Initialize an empty string to build our summary
+
+    begin
+      content_hash = JSON.parse(content_json)
+      blocks = content_hash["blocks"] || []
+
+      blocks.each do |block|
+        text_content = nil
+        case block["type"]
+        when "paragraph", "header", "quote"
+          text_content = block.dig("data", "text")
+        when "code"
+          text_content = block.dig("data", "code")
+        when "list"
+          items = block.dig("data", "items")
+          text_content = items.is_a?(Array) ? items.join(" ") : nil
+        end
+        if text_content.present?
+          clean_text = sanitize(text_content, tags: []) # Strip any HTML
+          summary_text += clean_text + " " # Add the text and a space
+        end
+        break if summary_text.length >= length
+      end
+      return truncate(summary_text, length: length, separator: ' ')
+    rescue StandardError => e
+      Rails.logger.error "Failed to parse article summary: #{e.message}"
+      ""
+    end
   end
 
   private

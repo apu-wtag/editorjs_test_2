@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+/*@import "tom-select/dist/css/tom-select.default.css";*/
 
 /* Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
@@ -20,7 +21,7 @@
     @apply font-display tracking-tight text-gray-900;
 }
 .prose p, .prose li {
-    @apply leading-relaxed text-gray-800;
+    @apply leading-relaxed text-gray-800 text-justify;
 }
 
 /* Code styling */
